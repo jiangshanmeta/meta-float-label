@@ -1,12 +1,15 @@
 <template>
     <main>
-        <!-- <meta-float-label>
-            <input placeholder="placeholder for input">
-        </meta-float-label> -->
-
-        <meta-float-label label="overwrite label">
-            <meta-input placeholder="meta-input"></meta-input>
+        <meta-float-label>
+            <input 
+                placeholder="placeholder for input"
+                @focus="handleFocus"
+            >
         </meta-float-label>
+
+        <!-- <meta-float-label label="overwrite label">
+            <meta-input placeholder="meta-input"></meta-input>
+        </meta-float-label> -->
     </main>
 </template>
 
@@ -20,6 +23,11 @@ export default{
     data(){
         return {
             inputvalue:""
+        }
+    },
+    methods:{
+        handleFocus(){
+            console.log("outer focus ",arguments)
         }
     },
 }
