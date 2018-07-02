@@ -6,6 +6,8 @@ function setBlur(){
     this.isFocus = false;
 }
 
+
+
 export default{
     name:"meta-float-label",
     props:{
@@ -34,27 +36,34 @@ export default{
             vnode.data = {};
         }
 
-        if(!vnode.data.on){
-            vnode.data.on = {};
+        const data = vnode.data;
+
+        if(!data.on){
+            data.on = {};
         }
         
         const label = this.label === undefined?
-            (vnode.data.attrs && vnode.data.attrs[this.placeholderField]):this.label;
+            (data.attrs && data.attrs[this.placeholderField]):this.label;
 
-        const event = vnode.data.on;
+        const event = data.on;
 
         const oldFocus = event.focus;
-        event.focus = function(){
+        event.focus = function(e){
             setFocus.call(this);
             oldFocus && oldFocus(...arguments)
         }.bind(this);
 
         const oldBlur = event.blur;
-        event.blur = function(){
+        event.blur = function(e){
             setBlur.call(this);
             oldBlur && oldBlur(...arguments);
         }.bind(this);
 
+        const value = vnode.componentOptions?
+            (data.props && data.props.value):
+            (data.domProps && data.domProps.value);
+        
+        console.log(value)
 
         return h("div",{
             class:{
@@ -65,6 +74,7 @@ export default{
                 class:{
                     'meta-float-label':true,
                     'meta-float-label-on-focus':this.isFocus,
+                    'meta-float-label-active':this.isFocus || (value !== undefined && String(value))
                 },
             },label),
             this.$slots.default,
