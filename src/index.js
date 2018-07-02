@@ -22,6 +22,10 @@ export default{
             type:[String,Number],
             default:"placeholder",
         },
+        fixed:{
+            type:Boolean,
+            default:false,
+        },
     },
     data(){
         return {
@@ -86,7 +90,7 @@ export default{
                 class:{
                     'meta-float-label':true,
                     'meta-float-label-on-focus':this.isFocus,
-                    'meta-float-label-active':this.isFocus || (value !== undefined && String(value))
+                    'meta-float-label-active':this.fixed || this.isFocus || (value !== undefined && String(value))
                 },
             },label),
             this.$slots.default,
