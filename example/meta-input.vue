@@ -1,6 +1,11 @@
 <template>
     <section>
-        <input v-model="model" :placeholder="placeholder">
+        <input 
+            v-model="model" 
+            :placeholder="placeholder" 
+            @focus="$emit('focus')"
+            @blur="$emit('blur')"
+        >
     </section>
 </template>
 

@@ -1,18 +1,19 @@
 <template>
     <main>
-        <!-- <meta-float-label>
+        <meta-float-label>
             <input 
                 placeholder="placeholder for input"
                 @focus="handleFocus"
                 v-model="inputvalue"
             >
         </meta-float-label>
-        {{inputvalue}} -->
+        {{inputvalue}}
 
         <meta-float-label label="overwrite label">
             <meta-input 
                 placeholder="meta-input"
                 v-model="inputvalue"
+                @focus="handleFocus"
             ></meta-input>
         </meta-float-label>
     </main>

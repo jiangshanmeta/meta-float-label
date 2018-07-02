@@ -6,6 +6,10 @@ function setBlur(){
     this.isFocus = false;
 }
 
+function isComponentVnode(vnode){
+    return vnode.componentOptions;
+}
+
 
 
 export default{
@@ -32,38 +36,46 @@ export default{
 
         const vnode = this.$slots.default[0];
         console.log(vnode)
-        if(!vnode.data){
-            vnode.data = {};
+
+        let event;
+        let value;
+        let placeholder;
+
+        if(isComponentVnode(vnode)){
+            const options = vnode.componentOptions;
+            if(!options.listeners){
+                options.listeners = {};
+            }
+            event = options.listeners;
+            value = options.propsData && options.propsData.value;
+            placeholder = options.propsData && options.propsData[this.placeholderField];
+        }else{
+            if(!vnode.data){
+                vnode.data = {};
+            }
+            const data = vnode.data;
+            if(!data.on){
+                data.on = {};
+            }
+            event = data.on;
+            value = data.domProps && data.domProps.value;
+            placeholder = data.attrs && data.attrs[this.placeholderField];
         }
 
-        const data = vnode.data;
-
-        if(!data.on){
-            data.on = {};
-        }
-        
-        const label = this.label === undefined?
-            (data.attrs && data.attrs[this.placeholderField]):this.label;
-
-        const event = data.on;
+        const label = this.label === undefined?placeholder:this.label;
 
         const oldFocus = event.focus;
-        event.focus = function(e){
+        event.focus = function(){
             setFocus.call(this);
             oldFocus && oldFocus(...arguments)
         }.bind(this);
 
         const oldBlur = event.blur;
-        event.blur = function(e){
+        event.blur = function(){
             setBlur.call(this);
             oldBlur && oldBlur(...arguments);
         }.bind(this);
 
-        const value = vnode.componentOptions?
-            (data.props && data.props.value):
-            (data.domProps && data.domProps.value);
-        
-        console.log(value)
 
         return h("div",{
             class:{
